@@ -32,6 +32,7 @@ const extension: JupyterFrontEndPlugin<void> = {
 
     // Create a blank content widget inside of a MainAreaWidget
     const content = new Widget();
+    content.addClass('my-apodWidget'); // new line
     const widget = new MainAreaWidget({content});
     widget.id = 'apod-jupyterlab';
     widget.title.label = 'Astronomy Picture';
@@ -41,6 +42,9 @@ const extension: JupyterFrontEndPlugin<void> = {
     // Add an image element to the content
 let img = document.createElement('img');
 content.node.appendChild(img);
+
+  let summary = document.createElement('p');
+  content.node.appendChild(summary);
 
 // Get a random date string in YYYY-MM-DD format
 function randomDate() {
@@ -58,6 +62,10 @@ if (data.media_type === 'image') {
   // Populate the image
   img.src = data.url;
   img.title = data.title;
+  summary.innerText = data.title;
+  if (data.copyright) {
+    summary.innerText += ` (Copyright ${data.copyright})`;
+   }
 } else {
   console.log('Random APOD was not a picture.');
 }
